@@ -1,0 +1,9 @@
+---
+# if set to yes mergerfs will be compiled from source
+install_from_source: yes
+
+# the version will only be used if install_from_source is no
+mergerfs_version: 2.8.0
+
+# mergerfs releases URL (target)
+release_url: https://github.com/trapexit/mergerfs/releases/download/{{ mergerfs_version }}/mergerfs_{{ mergerfs_version }}.debian-{{ ansible_distribution_release }}_amd64.deb

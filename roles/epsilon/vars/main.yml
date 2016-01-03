@@ -1,0 +1,16 @@
+---
+mntpoints:
+  - disk1
+  - disk2
+  - disk3
+  - disk4
+  - disk5
+  - parity1
+  - storage
+
+appdata: "/opt/appdata"
+
+mount_options:
+  "/home": "defaults"
+  "/mnt/disk1": "defaults"
+  "/mnt/storage": "defaults,allow_other,minfreespace=50G,fsname=mergerfs"

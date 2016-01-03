@@ -1,0 +1,21 @@
+---
+- name: check if MergerFS is installed (changed=not)
+  command: dpkg-query -W mergerfs
+  register: pkg_check
+  failed_when: pkg_check.rc > 1
+  changed_when: pkg_check.rc == 1
+
+- name: build mergerfs from source in a container
+  include: build-src.yml
+  when: pkg_check.rc == 1
+
+# an example of how to mount an array of disks using mergerfs
+# don't forget to install fuse
+# - name: mount mergerfs array
+#   mount:
+#     name: /mnt/storage
+#     src: /mnt/disk*
+#     opts: defaults,allow_other,minfreespace=50G,fsname=mergerfs
+#     fstype: fuse.mergerfs
+#     # change to 'mounted' to auto mount
+#     state: present

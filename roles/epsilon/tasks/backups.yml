@@ -1,0 +1,8 @@
+---
+
+# TODO: configure rsnapshot instead of rsync
+- name: install packages required for backup
+  apt: pkg={{ item }} state=present
+  with_items:
+    - rsync
+   #- rsnapshot

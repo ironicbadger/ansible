@@ -1,0 +1,8 @@
+---
+# base-os configuration - only disable if you're a mental
+base-os: true
+
+# set to 'no' or 'false' to disable item
+backups: true
+file_sharing: true
+docker_apps: true

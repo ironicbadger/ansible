@@ -1,0 +1,61 @@
+## Plex
+docker create \
+  --name plex \
+  --net host \
+  -e PUID=1050 -e PGID=1050 \
+  -v /opt/appdata/plex:/config \
+  -v /mnt/storage/:/data \
+  linuxserver/plex
+
+## NZBGet
+docker create \
+  --name nzbget \
+  -p 27020:6789 \
+  -e PGID=1050 -e PUID=1050 \
+  -v /opt/appdata/nzbget/config:/config \
+  -v /downloads:/downloads \
+  linuxserver/nzbget
+
+## sonarr
+docker create \
+  --name sonarr \
+  -p 27021:8989 \
+  -e PUID=1050 -e PGID=1050 \
+  -v /opt/appdata/sonarr:/config \
+  -v /mnt/storage/tv:/tv \
+  -v /downloads/complete/tv:/downloads \
+  --link nzbget \
+  linuxserver/sonarr
+
+## sonarr_f
+docker create \
+  --name sonarr_f \
+  -p 27021:8989 \
+  -e PUID=1050 -e PGID=1050 \
+  -v /opt/appdata/sonarr_family:/config \
+  -v /mnt/storage/tv_family:/tv \
+  -v /downloads/complete/tv_family:/downloads \
+  --link nzbget \
+  linuxserver/sonarr
+
+## CouchPotato
+docker create \
+  --link nzbget \
+  --name couchpotato \
+  -v /etc/localtime:/etc/localtime:ro \
+  -v /opt/appdata/couchpotato:/config \
+  -v /downloads/complete/movies:/downloads \
+  -v /mnt/storage/movies:/movies \
+  -e PGID=1050 -e PUID=1050 \
+  -p 27022:5050 \
+  linuxserver/couchpotato
+
+## Plexpy
+docker create \
+  --name plexpy \
+  -e PGID=1050 -e PUID=1050 \
+  -v="/etc/localtime:/etc/localtime:ro" \
+  -v="/opt/appdata/plexpy:/config" \
+  -v="/opt/appdata/plex/Library/Application Support/Plex Media Server/Logs:/logs:ro" \
+  -p 0.0.0.0:27029:8181 \
+  linuxserver/plexpy

@@ -1,0 +1,13 @@
+---
+# This playbook sets up epsilon from scratch
+
+- hosts: all
+  sudo: true
+
+  roles:
+    - docker
+    - mergerfs
+    - snapraid
+    # - git
+    # - rsync
+    - epsilon

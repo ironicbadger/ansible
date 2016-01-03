@@ -1,0 +1,34 @@
+---
+- name: install packages required by docker
+  apt:
+    name: "apt-transport-https"
+    state: present
+    update_cache: yes
+
+- name: add docker repository key
+  apt_key:
+    id: "{{ apt_key_sig }}"
+    url: "{{ apt_key_url }}"
+    state: present
+  register: add_repository_key
+  ignore_errors: true
+
+- name: add docker repository and update apt cache
+  apt_repository:
+    repo: "{{ apt_repository }}"
+    update_cache: yes
+    state: present
+
+- name: install (or update) docker package
+  apt:
+    name: "docker-engine"
+    state: "{{ 'latest' if update_docker_package else 'present' }}"
+    update_cache: yes
+  notify:
+    - systemd daemon-reload
+    - restart docker service
+
+- name: start docker
+  service:
+    name: docker
+    state: started

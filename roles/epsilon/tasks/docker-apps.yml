@@ -1,0 +1,31 @@
+---
+- name: create group for docker appdata
+  group:
+    name: dockergroup
+    state: present
+    gid: 1050
+
+- name: create user for docker appdata
+  user:
+    name: dockeruser
+    shell: /sbin/nologin
+    uid: 1050
+    group: dockergroup
+
+- name: create docker appdata base directory
+  file:
+    dest: "{{ appdata }}"
+    state: directory
+    recurse: yes
+    owner: dockeruser
+    group: dockergroup
+
+- name: copy docker-create script
+  copy:
+    src: docker-create
+    dest: /tmp/docker-create
+    mode: 0775
+
+- name: create apps using docker
+  shell: /tmp/docker-create
+  ignore_errors: true

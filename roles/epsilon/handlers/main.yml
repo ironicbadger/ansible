@@ -1,0 +1,27 @@
+---
+- name: systemd daemon-reload
+  command: systemctl daemon-reload
+
+- name: start samba service
+  service:
+    name: smbd
+    state: started
+
+- name: restart samba service
+  service:
+    name: docker
+    state: restarted
+
+- name: start nfs service
+  service:
+    name: nfs-kernel-server
+    state: started
+
+# required after an /etc/exports change for nfs
+- name: exportfs
+  command: exportfs -ra
+
+- name: restart nfs service
+  service:
+    name: nfs-kernel-server
+    state: restarted

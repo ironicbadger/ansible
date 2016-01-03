@@ -1,0 +1,52 @@
+---
+- name: ensure os is up to date
+  apt:
+    update_cache: yes
+    #upgrade: full
+    cache_valid_time: 300
+
+- name: install packages
+  apt: pkg={{ item }} state=present
+  with_items:
+    - python
+    - sudo
+    - openssh-server
+    - xfsprogs
+    - fuse
+    - htop
+    - curl
+    - wget
+    - iotop
+
+- name: create /mnt points
+  file:
+    dest: "/mnt/{{ item }}"
+    state: directory
+    owner: nobody
+    group: nogroup
+    mode: 0777
+  with_items: "{{ mntpoints }}"
+
+- name: mount disks
+  mount:
+    name: "{{ item.name }}"
+    src: "{{item.src}}"
+    fstype: xfs
+    # change to 'mounted' to auto mount
+    state: present
+  with_items:
+    - { name: /mnt/parity1, src: /dev/disk/by-id/ata-Hitachi_HDS5C3030ALA630_MJ1311YNG4GE8A-part1}
+    - { name: /mnt/disk1, src: /dev/disk/by-id/ata-Hitachi_HDS5C3030ALA630_MJ1311YNG5SD3A-part1}
+    - { name: /mnt/disk2, src: /dev/disk/by-id/ata-WDC_WD30EFRX-68AX9N0_WD-WCC1T0632015-part1}
+    - { name: /mnt/disk3, src: /dev/disk/by-id/ata-TOSHIBA_DT01ACA300_X3544DGKS-part1}
+    - { name: /mnt/disk4, src: /dev/disk/by-id/ata-WDC_WD30EFRX-68AX9N0_WD-WMC1T0074096-part1}
+    - { name: /mnt/disk5, src: /dev/disk/by-id/ata-Hitachi_HDS5C3030ALA630_MJ1311YNG7SAZA-part1}
+
+- name: mount mergerfs array
+  mount:
+    name: /mnt/storage
+    src: /mnt/disk*
+    opts: direct_io,defaults,allow_other,minfreespace=50G,fsname=mergerfs
+    fstype: fuse.mergerfs
+    # change to 'mounted' to auto mount
+    state: present

@@ -1,0 +1,2 @@
+# example fstab entry
+/mnt/disk*  /mnt/storage  fuse.mergerfs  defaults,allow_other,minfreespace=50G,fsname=mergerfs 0 0

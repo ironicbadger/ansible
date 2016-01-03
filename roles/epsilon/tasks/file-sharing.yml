@@ -1,0 +1,51 @@
+---
+  # Setup networking sharing of files from this system
+
+################################################################################
+# samba
+################################################################################
+- name: install samba
+  apt:
+    pkg: samba
+    state: present
+  notify:
+    - start samba service
+
+  # TODO: Auto configuring smb.conf based on
+  # https://github.com/debops/ansible-samba/blob/master/defaults/main.yml
+- name: install samba config
+  copy:
+    src: etc/samba/smb.conf
+    dest: /etc/samba/smb.conf
+    owner: root
+    group: root
+  notify:
+    - restart samba service
+
+################################################################################
+# nfs
+################################################################################
+- name: install nfs
+  apt:
+    pkg: nfs-kernel-server
+    state: present
+  notify:
+    - start nfs service
+
+- name: install nfs config
+  copy:
+    src: etc/exports
+    dest: /etc/exports
+    owner: root
+    group: root
+  notify:
+    - exportfs
+    - restart nfs service
+
+################################################################################
+# afp
+################################################################################
+
+# Jessie seems not to include netatalk out the box, it needs to be compiled.
+# Screw that for something I hardly use. If / when support is added and I get
+# around to caring I'll add it here.
