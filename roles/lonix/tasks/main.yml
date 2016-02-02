@@ -27,17 +27,18 @@
   tags:
     - rsnapshot
 
-- cron:
-    user: root
-    job: {{ item.job }}
-    name: snapshot-{{ item.name }}
-    weekday: {{ item.weekday }}
-    minute: 00
-    hour: {{ item.hour }}
-    dom: {{ item.dom|default('*') }}
+- name: setup cron
+  cron:
+    user: "root"
+    job: "{{ item.job }}"
+    name: "snapshot-{{ item.name }}"
+    weekday: "{{ item.weekday }}"
+    minute: "00"
+    hour: "{{ item.hour }}"
+    dom: "{{ item.dom|default('*') }}"
   with_items:
-    - { job: '{{ snapshot_daily }}', name: 'daily', weekday: '*', hour: '04', }
-    - { job: '{{ snapshot_weekly }}', name: 'weekly', weekday: '00', hour: '02', }
+    - { job: '{{ snapshot_daily }}', name: 'daily', weekday: '*', hour: '04' }
+    - { job: '{{ snapshot_weekly }}', name: 'weekly', weekday: '00', hour: '02' }
     - { job: '{{ snapshot_monthly }}', name: 'monthly', weekday: '*', hour: '00', dom: '01' }
   tags:
     - cron
@@ -47,5 +48,5 @@
     dest: "/var/backup/{{ ansible_hostname }}/exclude_file.txt"
     src: "var/backup/hostname/exclude_file.txt"
     mode: 0775
-  - tags:
+  tags:
     - config
