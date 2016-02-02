@@ -1,4 +1,0 @@
-# Rsnapshot backup: {{ ansible_hostname }}
-00 04 * * * rsnapshot -c /var/backup/{{ ansible_hostname }}/rsnapshot.conf sync && rsnapshot -c /var/backup/{{ ansible_hostname }}/rsnapshot.conf daily
-00 02 * * 0 rsnapshot -c /var/backup/{{ ansible_hostname }}/rsnapshot.conf weekly
-00 00 1 * * rsnapshot -c /var/backup/{{ ansible_hostname }}/rsnapshot.conf monthly

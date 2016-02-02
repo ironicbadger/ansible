@@ -1,0 +1,5 @@
+---
+snapshot_command: "rsnapshot -c /var/backup/{{ ansible_hostname }}/rsnapshot.conf"
+snapshot_daily: "{{ snapshot_command }} sync && {{ snapshot_command }} daily"
+snapshot_weekly: "{{ snapshot_command }} weekly"
+snapshot_monthly: "{{ snapshot_command }} monthly"
