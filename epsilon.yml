@@ -1,8 +1,0 @@
----
-- hosts: epsilon
-  sudo: true
-  roles:
-    - docker
-    - mergerfs
-    - snapraid
-    - epsilon

@@ -1,0 +1,15 @@
+include_conf\t/etc/rsnapshot-common.conf
+
+snapshot_root    /var/backup/{{ ansible_hostname }}/
+
+interval\thourly\t24
+interval\tdaily\t7
+interval\tweekly\t4
+interval\tmonthly\t120
+
+logfile\t/var/backup/{{ ansible_hostname }}/rsnapshot.log
+lockfile\t/var/backup/{{ ansible_hostname }}/rsnapshot.pid
+
+exclude_file\t/var/backup/{{ ansible_hostname }}/exclude_file.txt
+
+backup\troot@{{ ansible_hostname }}:/\t./

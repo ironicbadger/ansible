@@ -59,3 +59,12 @@ docker create \
   -v="/opt/appdata/plex/Library/Application Support/Plex Media Server/Logs:/logs:ro" \
   -p 0.0.0.0:27029:8181 \
   linuxserver/plexpy
+
+## Syncthing
+docker create \
+  --name syncthing \
+  --net host \
+  -v /opt/appdata/syncthing:/config \
+  -v /mnt/storage:/mnt/storage \
+  -e PGID=1050 -e PUID=1050 \
+  linuxserver/syncthing

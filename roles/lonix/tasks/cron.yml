@@ -1,0 +1,8 @@
+---
+- name: modify crontab template
+  template:
+    src: "root/crontab.j2"
+    dest: "/root/crontab.root"
+
+- name: install crontab manually
+  command: crontab /root/crontab.root

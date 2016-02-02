@@ -5,9 +5,4 @@
   sudo: true
 
   roles:
-    - docker
-    - mergerfs
-    - snapraid
-    # - git
-    # - rsync
-    - epsilon
+    - lonix

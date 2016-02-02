@@ -1,0 +1,8 @@
+---
+# ansible-playbook main.yml -i hosts --tags docker_apps -K
+# | the binary | this.file | -i targets | *optional --tags | -K asks for sudo pass
+
+- hosts: all
+  sudo: true
+  roles:
+    - lonix

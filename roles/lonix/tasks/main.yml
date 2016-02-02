@@ -1,0 +1,38 @@
+---
+# - name: install required software
+#   yum:
+#     name: "{{ item }}"
+#     state: installed
+#   with_items:
+#     - rsnapshot
+#     - cron
+
+- name: create backup directories
+  file:
+    dest: "{{ item }}"
+    state: directory
+    owner: root
+    group: root
+    mode: 0777
+  with_items:
+    - /var/backup/{{ ansible_hostname }}
+    - /var/backup/{{ ansible_hostname }}/.sync
+  tags:
+    - directories
+
+- name: install rsnapshot config
+  template:
+    src: "etc/rsnapshot.j2"
+    dest: "/etc/rsnapshot.conf"
+  tags:
+    - rsnapshot
+
+- name: configure cron
+  include: cron.yml
+  tag: cron
+
+- name: install excludes
+  copy:
+    dest: "/var/backup/{{ ansible_hostname }}/exclude_file.txt"
+    src: "var/backup/hostname/exclude_file.txt"
+    mode: 0775
