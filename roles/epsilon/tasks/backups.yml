@@ -45,7 +45,7 @@
     hour: "{{ item.hour }}"
     dom: "{{ item.dom|default('*') }}"
   with_items:
-    - { job: '{{ snapshot_hourly }}', name: 'hourly', weekday: '*', hour: '06,18' }
+    - { job: '{{ snapshot_hourly }}', name: 'hourly', weekday: '*', hour: '*/3' }
     - { job: '{{ snapshot_daily }}', name: 'daily', weekday: '*', hour: '00' }
     - { job: '{{ snapshot_weekly }}', name: 'weekly', weekday: '00', hour: '02' }
     - { job: '{{ snapshot_monthly }}', name: 'monthly', weekday: '*', hour: '04', dom: '01' }
