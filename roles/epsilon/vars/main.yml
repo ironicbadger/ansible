@@ -8,7 +8,13 @@ mntpoints:
   - parity1
   - storage
 
-appdata: "/opt/appdata"
+dockeruser: dockeruser
+dockergroup: dockergroup
+
+appdata: /opt/appdata
+downloaddir: /opt/downloads
+dockerlist: /opt/docker.list
+snapraidconf: /etc/snapraid.conf
 
 mount_options:
   "/home": "defaults"

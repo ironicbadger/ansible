@@ -1,0 +1,6 @@
+#!/bin/bash
+#
+# Shows last 50 lines of logs for specified container and continues
+# showing log output in realtime.
+
+docker logs -tf --tail="50" "$@"
