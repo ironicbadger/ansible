@@ -6,6 +6,6 @@
 
   roles:
     - docker
-    - mergerfs
-    - snapraid
+    #- mergerfs
+    #- snapraid
     - epsilon
