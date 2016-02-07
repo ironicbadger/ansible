@@ -1,9 +1,7 @@
+# ansible-playbook main.yml -i hosts --tags docker_apps
 ---
-# This playbook sets up epsilon from scratch
-
-- hosts: all
+- hosts: epsilon
   sudo: true
-
   roles:
     - docker
     - mergerfs

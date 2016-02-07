@@ -1,5 +1,13 @@
 ---
 
+- name: install snapraid configuration
+  copy:
+    src: etc/{{ snapraidconf|basename }}
+    dest: "{{ snapraidconf }}"
+    owner: root
+    group: root
+    mode: 0775
+
 # TODO: configure rsnapshot instead of rsync
 - name: install packages required for backup
   apt: pkg={{ item }} state=present

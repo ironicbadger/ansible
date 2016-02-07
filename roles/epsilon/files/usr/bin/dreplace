@@ -1,0 +1,40 @@
+#!/bin/bash
+# Replaces a container with an upgraded version from Docker Hub and recreates
+# using arguments supplied via /opt/docker.list
+
+CONTAINER_NAME="$@"
+LIST="/opt/docker.list"
+
+echo "dreplace will now replace the $CNAME container as "
+echo "per the arguments specified in $LIST..."
+
+# check docker.list exists, exit if not
+{
+if [ ! -f $LIST ]; then
+  echo "docker.list not found!"
+  exit 0
+fi
+}
+
+# check specified container exists in docker.list, exit if not
+
+
+# read from docker.list the specified containers 'create' command
+DOCKER_CREATE=$(sed -n "/^docker create --name $CONTAINER_NAME \\\\$/,/\/$CONTAINER_NAME$/p" $LIST | sed -E 's/(".*")|\\/\1/g')
+echo $DOCKER_CREATE
+
+# check if container already exists (docker ps -a), stop + remove if yes
+{
+  if docker ps -a | grep $CONTAINER_NAME;
+  then
+    echo "Container exists already..."
+    docker pull ${DOCKER_CREATE##* }
+    docker stop $CONTAINER_NAME
+    docker rm $CONTAINER_NAME
+    $DOCKER_CREATE
+    docker start $CONTAINER_NAME
+  else
+    echo "Container doesn't exist, exiting..."
+    exit 0
+  fi
+}

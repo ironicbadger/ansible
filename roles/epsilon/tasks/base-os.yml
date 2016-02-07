@@ -2,21 +2,36 @@
 - name: ensure os is up to date
   apt:
     update_cache: yes
-    #upgrade: full
+    upgrade: full
     cache_valid_time: 300
 
 - name: install packages
   apt: pkg={{ item }} state=present
   with_items:
-    - python
-    - sudo
-    - openssh-server
-    - xfsprogs
-    - fuse
-    - htop
+    - bash-completion
     - curl
-    - wget
+    - exiftool
+    - fuse
+    - git
+    - htop
+    - iftop
     - iotop
+    - jq
+    - lynx
+    - mc
+    - ncdu
+    - nmap
+    - openssh-server
+    - python
+    - reptyr
+    - screen
+    - sudo
+    - tree
+    - wget
+    - xfsprogs
+    - youtube-dl
+  tags:
+    - packages
 
 - name: create /mnt points
   file:

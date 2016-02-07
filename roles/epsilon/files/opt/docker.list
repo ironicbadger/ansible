@@ -1,0 +1,65 @@
+# Define containers in a block, separated by one line of white space.
+# The block *must* start with `docker create --name <name>`. The <name>
+# is parsed by a `dTool` and should ideally match the dockerhub name
+
+docker create --name plex \
+  --net host \
+  -e VERSION="plexpass" \
+  -e PUID=1050 -e PGID=1050 \
+  -v /opt/appdata/plex:/config \
+  -v /mnt/storage/:/data \
+  linuxserver/plex
+
+docker create --name quassel \
+  -v /opt/appdata/quassel:/config \
+  -e PGID=1050 -e PUID=1050 \
+  -p 27042:4242 \
+  linuxserver/quassel-core
+
+docker create --name nzbget \
+  -p 27020:6789 \
+  -e PGID=1050 -e PUID=1050 \
+  -v /opt/appdata/nzbget/config:/config \
+  -v /opt/downloads:/downloads \
+  linuxserver/nzbget
+
+docker create --name sonarr \
+  -p 27021:8989 \
+  -e PUID=1050 -e PGID=1050 \
+  -v /opt/appdata/sonarr:/config \
+  -v /mnt/storage/tv:/tv \
+  -v /opt/downloads/complete/tv:/downloads \
+  --link nzbget \
+  linuxserver/sonarr
+
+docker create --name sonarr_f \
+  -p 27025:8989 \
+  -e PUID=1050 -e PGID=1050 \
+  -v /opt/appdata/sonarr_family:/config \
+  -v /mnt/storage/tv_family:/tv \
+  -v /opt/downloads/complete/tv_family:/downloads \
+  --link nzbget \
+  linuxserver/sonarr
+
+docker create --name couchpotato \
+  -v /opt/appdata/couchpotato:/config \
+  -v /opt/downloads/complete/movies:/downloads \
+  -v /mnt/storage/movies:/movies \
+  -e PGID=1050 -e PUID=1050 \
+  -p 27022:5050 \
+  --link nzbget \
+  linuxserver/couchpotato
+
+docker create --name plexpy \
+  -e PGID=1050 -e PUID=1050 \
+  -v=/opt/appdata/plexpy:/config \
+  -v=/opt/appdata/plex/Library/Application\ Support/Plex\ Media\ Server/Logs:/logs:ro \
+  -p 0.0.0.0:27029:8181 \
+  linuxserver/plexpy
+
+docker create --name deluge \
+  --net=host \
+  -e PUID=1050 -e PGID=1050 \
+  -v /opt/downloads/torrents:/downloads \
+  -v /opt/appdata/deluge:/config \
+  linuxserver/deluge

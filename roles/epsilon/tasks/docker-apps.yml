@@ -1,31 +1,71 @@
 ---
 - name: create group for docker appdata
   group:
-    name: dockergroup
+    name: "{{dockergroup}}"
     state: present
     gid: 1050
 
 - name: create user for docker appdata
   user:
-    name: dockeruser
+    name: "{{dockeruser}}"
     shell: /sbin/nologin
     uid: 1050
-    group: dockergroup
+    group: "{{dockergroup}}"
 
 - name: create docker appdata base directory
   file:
     dest: "{{ appdata }}"
     state: directory
     recurse: yes
-    owner: dockeruser
-    group: dockergroup
+    owner: "{{dockeruser}}"
+    group: "{{dockergroup}}"
+
+- name: ensure download folder is present
+  file:
+    dest: "{{ downloaddir }}"
+    state: directory
+    recurse: yes
+    owner: "{{ dockeruser }}"
+    group: "{{ dockergroup }}"
+
+- name: ensure torrent download dir is present
+  file:
+    dest: "{{ downloaddir }}/torrents"
+    state: directory
+    recurse: yes
+    owner: "{{ dockeruser }}"
+    group: "{{ dockergroup }}"
+
+- name: add dtail
+  copy:
+    src: "usr/bin/dtail"
+    dest: "/usr/bin/dtail"
+    owner: root
+    group: root
+    mode: 0777
+
+- name: add dcreate
+  copy:
+    src: "usr/bin/dcreate"
+    dest: "/usr/bin/dcreate"
+    owner: root
+    group: root
+    mode: 0777
+
+- name: add dreplace
+  copy:
+    src: "usr/bin/dreplace"
+    dest: "/usr/bin/dreplace"
+    owner: root
+    group: root
+    mode: 0777
 
 - name: copy docker-create script
   copy:
-    src: docker-create
-    dest: /tmp/docker-create
+    src: opt/{{ dockerlist|basename }}
+    dest: "{{ dockerlist }}"
     mode: 0775
 
-- name: create apps using docker
-  shell: /tmp/docker-create
-  ignore_errors: true
+# - name: create apps using docker
+#   shell: "{{ dockerlist }}"
+#   ignore_errors: true
