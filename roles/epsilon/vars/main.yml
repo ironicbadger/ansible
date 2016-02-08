@@ -14,9 +14,22 @@ dockergroup: dockergroup
 appdata: /opt/appdata
 downloaddir: /opt/downloads
 dockerlist: /opt/docker.list
+
 snapraidconf: /etc/snapraid.conf
+rsnapshotconf: /etc/rsnapshot.conf
+
+snap_run_path: /opt/snapraid-runner/snapraid-runner
+snap_run_conf: "{{ snap_run_path }}.conf"
+snap_run_bin: "{{ snap_run_path }}.py"
+snap_run_command: "python2 {{ snap_run_bin }} -c {{ snap_run_conf}}"
 
 mount_options:
   "/home": "defaults"
   "/mnt/disk1": "defaults"
   "/mnt/storage": "defaults,allow_other,minfreespace=50G,fsname=mergerfs"
+
+snapshot_command: "rsnapshot -c /etc/rsnapshot.conf"
+snapshot_hourly: "{{ snapshot_command }} sync && {{ snapshot_command }} hourly"
+snapshot_daily: "{{ snapshot_command }} daily"
+snapshot_weekly: "{{ snapshot_command }} weekly"
+snapshot_monthly: "{{ snapshot_command }} monthly"

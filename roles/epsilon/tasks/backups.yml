@@ -1,5 +1,11 @@
 ---
 
+- name: install packages required for backup
+  apt: pkg={{ item }} state=present
+  with_items:
+    - rsync
+    - rsnapshot
+
 - name: install snapraid configuration
   copy:
     src: etc/{{ snapraidconf|basename }}
@@ -8,9 +14,41 @@
     group: root
     mode: 0775
 
-# TODO: configure rsnapshot instead of rsync
-- name: install packages required for backup
-  apt: pkg={{ item }} state=present
+- name: install rsnapshot configuration
+  copy:
+    src: etc/{{ rsnapshotconf|basename }}
+    dest: "{{ rsnapshotconf }}"
+    owner: root
+    group: root
+    mode: 0775
+
+- name: clone snapraid-runner
+  git:
+    repo: https://github.com/Chronial/snapraid-runner.git
+    dest: /opt/snapraid-runner
+
+- name: install snapraid-runner configuration
+  copy:
+    src: opt/snapraid-runner/snapraid-runner.conf
+    dest: "{{ snap_run_conf }}"
+    owner: root
+    group: root
+    mode: 0775
+
+- name: setup cron for rsnapshot and snapraid
+  cron:
+    user: "root"
+    job: "{{ item.job }}"
+    name: "snapshot-{{ item.name }}"
+    weekday: "{{ item.weekday }}"
+    minute: "00"
+    hour: "{{ item.hour }}"
+    dom: "{{ item.dom|default('*') }}"
   with_items:
-    - rsync
-   #- rsnapshot
+    - { job: '{{ snapshot_hourly }}', name: 'hourly', weekday: '*', hour: '*/3' }
+    - { job: '{{ snapshot_daily }}', name: 'daily', weekday: '*', hour: '00' }
+    - { job: '{{ snapshot_weekly }}', name: 'weekly', weekday: '00', hour: '02' }
+    - { job: '{{ snapshot_monthly }}', name: 'monthly', weekday: '*', hour: '04', dom: '01' }
+    - { job: '{{ snap_run_command }}', name: 'snapraid_runner', weekday: '*', hour: '08' }
+  tags:
+    - cron
