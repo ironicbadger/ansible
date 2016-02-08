@@ -1,4 +1,5 @@
 ---
+- include_vars: vault.yml
 
 - name: install packages required for backup
   apt: pkg={{ item }} state=present
@@ -27,13 +28,18 @@
     repo: https://github.com/Chronial/snapraid-runner.git
     dest: /opt/snapraid-runner
 
-- name: install snapraid-runner configuration
-  copy:
-    src: opt/snapraid-runner/snapraid-runner.conf
+# - name: install snapraid-runner configuration
+#   copy:
+#     src: opt/snapraid-runner/snapraid-runner.conf
+#     dest: "{{ snap_run_conf }}"
+#     owner: root
+#     group: root
+#     mode: 0775
+
+- name: install rsnapshot config
+  template:
+    src: "opt/snapraid-runner.j2"
     dest: "{{ snap_run_conf }}"
-    owner: root
-    group: root
-    mode: 0775
 
 - name: setup cron for rsnapshot and snapraid
   cron:
