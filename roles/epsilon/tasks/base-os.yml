@@ -26,6 +26,7 @@
     - reptyr
     - screen
     - sudo
+    - tmux
     - tree
     - wget
     - xfsprogs
@@ -45,7 +46,7 @@
 - name: mount disks
   mount:
     name: "{{ item.name }}"
-    src: "{{item.src}}"
+    src: "{{ item.src}}"
     fstype: xfs
     # change to 'mounted' to auto mount
     state: present
