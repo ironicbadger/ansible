@@ -1,0 +1,23 @@
+---
+# apt repository key
+apt_key_url: https://sks-keyservers.net/pks/lookup?op=get&search=0xee6d536cf7dc86e2d7d56f59a178ac6c6238f52e
+
+# Line to be added to sources docker.list (release specific)
+apt_repository: deb https://apt.dockerproject.org/repo ubuntu-{{ ansible_distribution_release }} main
+cs_apt_repository: deb https://packages.docker.com/1.9/apt/repo ubuntu-trusty main
+
+# The following help expose a docker port or to add additional options when
+# running docker daemon.  The default is to not use any special options.
+# docker_opts: >
+#  -H unix://
+#  -H tcp://0.0.0.0:2375
+#  --log-level=debug
+docker_opts: ""
+
+# List of users to be added to 'docker' system group (disabled by default)
+# SECURITY WARNING:
+# Be aware that granted users can easily get full root access on the docker host system!
+docker_group_members: []
+
+# Set to 'yes' or 'true' to enable updates (sets 'latest' in apt module)
+update_docker_package: yes
