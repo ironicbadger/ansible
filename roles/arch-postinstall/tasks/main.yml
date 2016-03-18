@@ -1,0 +1,6 @@
+---
+# things to do on an Arch box post-install, no matter it's role
+- name: configure baseos
+  include: baseos.yml
+  when: baseos
+  tags: baseos

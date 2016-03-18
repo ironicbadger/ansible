@@ -4,6 +4,7 @@
   sudo: true
   roles:
     - docker
+    - docker-compose
     - mergerfs
     - snapraid
     - epsilon

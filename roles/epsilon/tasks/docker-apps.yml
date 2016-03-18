@@ -44,28 +44,18 @@
     group: root
     mode: 0777
 
-- name: add dcreate
-  copy:
-    src: "usr/bin/dcreate"
-    dest: "/usr/bin/dcreate"
-    owner: root
-    group: root
-    mode: 0777
+- name: set docker PUID and PGID environment variables (for compose)
+  environment:
+    PGID: 1050
+    PUID: 1050
 
-- name: add dreplace
+- name: copy docker-compose.yml into position
   copy:
-    src: "usr/bin/dreplace"
-    dest: "/usr/bin/dreplace"
-    owner: root
-    group: root
-    mode: 0777
-
-- name: copy docker-create script
-  copy:
-    src: opt/{{ dockerlist|basename }}
-    dest: "{{ dockerlist }}"
+    src: "opt/docker-compose.yml"
+    dest: "/opt/docker-compose.yml"
+    owner: nobody
+    group: nogroup
     mode: 0775
 
-# - name: create apps using docker
-#   shell: "{{ dockerlist }}"
-#   ignore_errors: true
+- name: use docker-compose to bring up apps
+  shell: docker-compose up -d -f /opt/docker-compose.yml
