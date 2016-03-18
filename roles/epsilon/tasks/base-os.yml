@@ -12,6 +12,7 @@
     - curl
     - exiftool
     - fuse
+    - glances
     - git
     - htop
     - iftop
