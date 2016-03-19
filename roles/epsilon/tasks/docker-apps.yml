@@ -44,10 +44,13 @@
     group: root
     mode: 0777
 
-- name: set docker PUID and PGID environment variables (for compose)
-  environment:
-    PGID: 1050
-    PUID: 1050
+- name: set docker PUID and PGID environment variables for compose
+  copy:
+    src: "etc/environment"
+    dest: "/etc/environment"
+    owner: root
+    group: root
+    mode: 0775
 
 - name: copy docker-compose.yml into position
   copy:
