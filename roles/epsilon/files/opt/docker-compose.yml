@@ -1,0 +1,131 @@
+---
+version: '2'
+services:
+  plex:
+    image: linuxserver/plex
+    container_name: plex
+    volumes:
+      - /opt/appdata/plex:/config
+      - /mnt/storage:/data
+    network_mode: host
+    restart: always
+    environment:
+      - VERSION=plexpass
+      - PUID=${PUID}
+      - PGID=${PGID}
+  plexpy:
+    image: linuxserver/plexpy
+    container_name: plexpy
+    depends_on:
+      - plex
+    volumes:
+      - /opt/appdata/plexpy:/config
+      - /opt/appdata/plex/Library/Application\ Support/Plex\ Media\ Server/Logs:/logs:ro
+    ports:
+      - 27029:8181
+    links:
+      - plex
+    restart: always
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+  plexrequests:
+    image: lsiodev/plexrequests
+    container_name: plexrequests
+    depends_on:
+      - plex
+    volumes:
+      - /opt/appdata/plexrequests:/config
+      - /mnt/storage/tv:/tv
+    ports:
+      - 27026:3000
+    links:
+      - plex
+    restart: always
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+  nzbget:
+    image: linuxserver/nzbget
+    container_name: nzbget
+    volumes:
+      - /opt/appdata/nzbget/config:/config
+      - /opt/downloads:/downloads
+    ports:
+      - 27020:6789
+    restart: always
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+  sonarr:
+    image: linuxserver/sonarr
+    container_name: sonarr
+    depends_on:
+      - nzbget
+    volumes:
+      - /opt/appdata/sonarr:/config
+      - /mnt/storage/tv:/tv
+      - /opt/downloads/complete/tv:/downloads
+    ports:
+      - 27021:8989
+    links:
+      - nzbget
+    restart: always
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+  sonarr_f:
+    image: linuxserver/sonarr
+    container_name: sonarr_f
+    depends_on:
+      - nzbget
+    volumes:
+      - /opt/appdata/sonarr_f:/config
+      - /mnt/storage/tv:/tv
+      - /opt/downloads/complete/tv:/downloads
+    ports:
+      - 27025:8989
+    links:
+      - nzbget
+    restart: always
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+  couchpotato:
+    image: linuxserver/couchpotato
+    container_name: couchpotato
+    depends_on:
+      - nzbget
+    volumes:
+      - /opt/appdata/couchpotato:/config
+      - /opt/downloads/complete/movies:/downloads
+      - /mnt/storage/movies:/movies
+    ports:
+      - 27022:5050
+    links:
+      - nzbget
+    restart: always
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+  unifi:
+    image: linuxserver/unifi
+    container_name: unifi
+    network_mode: host
+    volumes:
+      - /opt/appdata/unifi:/config
+    restart: always
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+  syncthing:
+    image: linuxserver/syncthing
+    container_name: syncthing
+    network_mode: host
+    volumes:
+      - /opt/appdata/syncthing:/config
+      - /mnt/storage:/mnt/storage
+    restart: always
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}

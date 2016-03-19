@@ -1,0 +1,19 @@
+---
+
+- name: install packages required by docker-compose
+  apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+  with_items:
+    - python-setuptools
+
+- name: Installing dependencies
+  easy_install:
+    name: pip
+
+- name: Installing docker compose
+  pip:
+    name: docker-compose
+    version: "{{ docker_compose_version if docker_compose_version else omit }}"
+    state: present
