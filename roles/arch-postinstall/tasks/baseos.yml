@@ -1,0 +1,65 @@
+---
+
+- name: install packages
+  pacman: name={{ item }}
+    with_items:
+      - ansible
+      - audacity
+      - bash-completion
+      - bridge-utils
+      - chromium
+      - curl
+      - deja-dup
+      - docker
+      - firefox
+      - git
+      - gnome
+      - hddtemp
+      - htop
+      - iftop
+      - iotop
+      - lame
+      - libvirt
+      - lm_sensors
+      - lsof
+      - mc
+      - mumble
+      - ncdu
+      - networkmanager
+      - nmap
+      - ntp
+      - openssh
+      - openttd
+      - openttd-opengfx
+      - powertop
+      - pycharm-community
+      - qemu
+      - quassel-client
+      - reptyr
+      - rsnapshot
+      - screen
+      - skype
+      - skype-call-recorder
+      - sl
+      - smbclient
+      - steam
+      - strace
+      - sudo
+      - teamspeak3
+      - tmux
+      - tree
+      - vagrant
+      - vim
+      - virt-manager
+      - virtualbox
+      - virtualbox-guest-iso
+      - virtualbox-host-modules
+      - wget
+      - which
+      - wpa_cli
+      - wpa_supplicant
+      - xf86-video-intel
+      - yaourt
+      - youtube-dl
+    tags:
+      - packages
