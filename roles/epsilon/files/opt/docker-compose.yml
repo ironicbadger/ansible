@@ -129,3 +129,15 @@ services:
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
+  deluge:
+    image: linuxserver/deluge
+    container_name: deluge
+    network_mode: host
+    volumes:
+      - /opt/appdata/deluge:/config
+      - /opt/downloads:/downloads
+      - /mnt/storage:/mnt/storage
+    restart: always
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
