@@ -141,3 +141,12 @@ services:
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
+  booksonic:
+    image: ironicbadger/booksonic
+    container_name: booksonic
+    ports:
+      - 27028:8080
+    volumes:
+      - /opt/appdata/booksonic:/var/booksonic
+      - /mnt/storage/audiobooks:/audiobooks
+    restart: always
