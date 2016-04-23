@@ -60,5 +60,5 @@
     group: nogroup
     mode: 0775
 
-- name: use docker-compose to bring up apps
-  shell: docker-compose -f /opt/docker-compose.yml up -d
+#- name: use docker-compose to bring up apps
+#  shell: docker-compose -f /opt/docker-compose.yml up -d
