@@ -15,13 +15,13 @@
     group: root
     mode: 0775
 
-- name: install rsnapshot configuration
-  copy:
-    src: etc/{{ rsnapshotconf|basename }}
-    dest: "{{ rsnapshotconf }}"
-    owner: root
-    group: root
-    mode: 0775
+#- name: install rsnapshot configuration
+#  copy:
+#    src: etc/{{ rsnapshotconf|basename }}
+#    dest: "{{ rsnapshotconf }}"
+#    owner: root
+#    group: root
+#    mode: 0775
 
 - name: clone snapraid-runner
   git:
@@ -36,10 +36,10 @@
 #     group: root
 #     mode: 0775
 
-- name: install rsnapshot config
-  template:
-    src: "opt/snapraid-runner.j2"
-    dest: "{{ snap_run_conf }}"
+#- name: install rsnapshot config
+#  template:
+#    src: "opt/snapraid-runner.j2"
+#    dest: "{{ snap_run_conf }}"
 
 - name: setup cron for rsnapshot and snapraid
   cron:
@@ -51,10 +51,10 @@
     hour: "{{ item.hour }}"
     dom: "{{ item.dom|default('*') }}"
   with_items:
-    - { job: '{{ snapshot_hourly }}', name: 'hourly', weekday: '*', hour: '*/3' }
-    - { job: '{{ snapshot_daily }}', name: 'daily', weekday: '*', hour: '00' }
-    - { job: '{{ snapshot_weekly }}', name: 'weekly', weekday: '00', hour: '02' }
-    - { job: '{{ snapshot_monthly }}', name: 'monthly', weekday: '*', hour: '04', dom: '01' }
+#    - { job: '{{ snapshot_hourly }}', name: 'hourly', weekday: '*', hour: '*/3' }
+#    - { job: '{{ snapshot_daily }}', name: 'daily', weekday: '*', hour: '00' }
+#    - { job: '{{ snapshot_weekly }}', name: 'weekly', weekday: '00', hour: '02' }
+#    - { job: '{{ snapshot_monthly }}', name: 'monthly', weekday: '*', hour: '04', dom: '01' }
     - { job: '{{ snap_run_command }}', name: 'snapraid_runner', weekday: '*', hour: '08' }
   tags:
     - cron
