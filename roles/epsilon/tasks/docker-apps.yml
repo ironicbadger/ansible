@@ -16,7 +16,7 @@
   file:
     dest: "{{ appdata }}"
     state: directory
-    recurse: yes
+    #recurse: yes
     owner: "{{dockeruser}}"
     group: "{{dockergroup}}"
 
