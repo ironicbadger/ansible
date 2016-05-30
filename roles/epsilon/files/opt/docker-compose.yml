@@ -51,6 +51,7 @@ services:
     volumes:
       - /opt/appdata/nzbget/config:/config
       - /opt/downloads:/downloads
+      - /mnt/disk1/downloads/complete:/downloads/complete
     ports:
       - 27020:6789
     restart: always
@@ -65,26 +66,9 @@ services:
     volumes:
       - /opt/appdata/sonarr:/config
       - /mnt/storage/tv:/tv
-      - /opt/downloads/complete/tv:/downloads
+      - /mnt/disk1/downloads/complete/tv:/downloads
     ports:
       - 27021:8989
-    links:
-      - nzbget
-    restart: always
-    environment:
-      - PUID=${PUID}
-      - PGID=${PGID}
-  sonarr_f:
-    image: linuxserver/sonarr
-    container_name: sonarr_f
-    depends_on:
-      - nzbget
-    volumes:
-      - /opt/appdata/sonarr_f:/config
-      - /mnt/storage/tv:/tv
-      - /opt/downloads/complete/tv:/downloads
-    ports:
-      - 27025:8989
     links:
       - nzbget
     restart: always
@@ -98,7 +82,7 @@ services:
       - nzbget
     volumes:
       - /opt/appdata/couchpotato:/config
-      - /opt/downloads/complete/movies:/downloads
+      - /mnt/disk1/downloads/complete/movies:/downloads
       - /mnt/storage/movies:/movies
     ports:
       - 27022:5050
@@ -114,7 +98,6 @@ services:
     network_mode: host
     volumes:
       - /opt/appdata/unifi:/config
-    restart: always
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
@@ -135,7 +118,7 @@ services:
     network_mode: host
     volumes:
       - /opt/appdata/deluge:/config
-      - /opt/downloads:/downloads
+      - /mnt/disk1/downloads:/downloads
       - /mnt/storage:/mnt/storage
     restart: always
     environment:
