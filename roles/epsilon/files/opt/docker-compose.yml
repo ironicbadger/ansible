@@ -128,8 +128,18 @@ services:
     image: ironicbadger/booksonic
     container_name: booksonic
     ports:
-      - 27028:8080
+      - 27027:8080
     volumes:
       - /opt/appdata/booksonic:/var/booksonic
       - /mnt/storage/audiobooks:/audiobooks
+    restart: always
+  btsync:
+    image: bittorrent/sync
+    container_name: btsync
+    volumes:
+      - /opt/appdata/btsync:/mnt/sync
+      - /mnt/storage:/mnt/mounted_folders/storage
+    ports:
+      - 27028:8888
+      - 55555:55555
     restart: always
