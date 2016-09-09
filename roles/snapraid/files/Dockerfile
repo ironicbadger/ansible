@@ -1,5 +1,6 @@
 FROM debian:jessie
 MAINTAINER IronicBadger <ironicbadger@linuxserver.io>
+ENV SNAPRAID_VERSION=10.0
 
 # Builds SnapRAID from source
 RUN apt-get update && \
@@ -10,9 +11,9 @@ RUN apt-get update && \
     make \
     checkinstall \
     curl && \
-  curl -LO https://github.com/amadvance/snapraid/releases/download/v9.1/snapraid-9.1.tar.gz && \
-  tar -xvf snapraid-9.1.tar.gz && \
-  cd snapraid-9.1 && \
+  curl -LO https://github.com/amadvance/snapraid/releases/download/v$SNAPRAID_VERSION/snapraid-$SNAPRAID_VERSION.tar.gz && \
+  tar -xvf snapraid-$SNAPRAID_VERSION.tar.gz && \
+  cd snapraid-$SNAPRAID_VERSION && \
   ./configure && \
   make -j8 && \
   make -j8 check && \
