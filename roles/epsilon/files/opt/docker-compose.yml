@@ -30,7 +30,7 @@ services:
       - PUID=${PUID}
       - PGID=${PGID}
   plexrequests:
-    image: lsiodev/plexrequests
+    image: linuxserver/plexrequests
     container_name: plexrequests
     depends_on:
       - plex
@@ -101,17 +101,6 @@ services:
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
-  syncthing:
-    image: linuxserver/syncthing
-    container_name: syncthing
-    network_mode: host
-    volumes:
-      - /opt/appdata/syncthing:/config
-      - /mnt/storage:/mnt/storage
-    restart: always
-    environment:
-      - PUID=${PUID}
-      - PGID=${PGID}
   deluge:
     image: linuxserver/deluge
     container_name: deluge
@@ -134,7 +123,7 @@ services:
       - /mnt/storage/audiobooks:/audiobooks
     restart: always
   btsync:
-    image: bittorrent/sync
+    image: resilio/sync
     container_name: btsync
     volumes:
       - /opt/appdata/btsync:/mnt/sync
@@ -142,4 +131,16 @@ services:
     ports:
       - 27028:8888
       - 55555:55555
+    restart: always
+  smokeping:
+    image: linuxserver/smokeping
+    container_name: smokeping
+    volumes:
+      - /opt/appdata/smokeping/config:/config
+      - /opt/appdata/smokeping/data:/data
+    ports:
+      - 27025:80
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
     restart: always
