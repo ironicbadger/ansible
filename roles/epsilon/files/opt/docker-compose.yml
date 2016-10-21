@@ -144,3 +144,14 @@ services:
       - PUID=${PUID}
       - PGID=${PGID}
     restart: always
+  quassel:
+    image: linuxserver/quassel-core
+    container_name: quassel
+    volumes:
+      - /opt/appdata/quassel:/config
+    ports:
+      - 27023:4242
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+    restart: always
