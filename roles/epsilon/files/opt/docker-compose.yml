@@ -122,15 +122,18 @@ services:
       - /opt/appdata/booksonic:/var/booksonic
       - /mnt/storage/audiobooks:/audiobooks
     restart: always
-  btsync:
-    image: resilio/sync
-    container_name: btsync
+  sync:
+    image: linuxserver/resilio-sync
+    container_name: sync
     volumes:
-      - /opt/appdata/btsync:/mnt/sync
-      - /mnt/storage:/mnt/mounted_folders/storage
+      - /opt/appdata/sync:/config
+      - /mnt/storage:/sync
     ports:
       - 27028:8888
       - 55555:55555
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
     restart: always
   smokeping:
     image: linuxserver/smokeping
