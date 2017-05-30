@@ -2,7 +2,7 @@
 version: '2'
 services:
   plex:
-    image: linuxserver/plex
+    image: plexinc/pms-docker
     container_name: plex
     volumes:
       - /opt/appdata/plex:/config
@@ -10,7 +10,7 @@ services:
     network_mode: host
     restart: always
     environment:
-      - VERSION=plexpass
+      - PLEX_CLAIM="nope"
       - PUID=${PUID}
       - PGID=${PGID}
   plexpy:
@@ -158,3 +158,36 @@ services:
       - PUID=${PUID}
       - PGID=${PGID}
     restart: always
+  nowshowing:
+    image: ninthwalker/nowshowing
+    container_name: nowshowing
+    volumes:
+      - /opt/appdata/nowshowing:/config
+    ports:
+      - 27024:6789
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ="Europe/London"
+      - PLEX_SERVER_IP="192.168.1.2"
+      - PLEX_USERNAME="nope"
+      - PLEX_PASSWORD="nooooope"
+      - SMTP_SERVER="smtp.gmail.com"
+      - SMTP_PORT="587"
+      - EMAIL_USERNAME="nope"
+      - EMAIL_PASSWORD="nooooooope"
+    restart: always
+  radarr:
+    image: linuxserver/radarr
+    container_name: radarr
+    volumes:
+      - /opt/appdata/radarr:/config
+      - /mnt/storage/movies:/movies
+      - /mnt/disk1/downloads/complete/movies:/downloads
+    ports:
+      - 7878:7878
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+    restart:
+      always
