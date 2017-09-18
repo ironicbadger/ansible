@@ -210,17 +210,21 @@ services:
       always
   influxdb:
     image: influxdb:latest
-    name: influxdb
+    container_name: influxdb
     restart: always
-      ports:
-        - 8086:8086
-      volumes:
-        - /opt/appdata/influxdb:/var/lib/influxdb
+    ports:
+      - 8086:8086
+    volumes:
+      - /opt/appdata/influxdb:/var/lib/influxdb
+  restart:
+      always
   grafana:
     image: grafana/grafana
-    name: grafana
+    container_name: grafana
     restart: always
     ports:
       - 3001:3000
     volumes:
       - /opt/appdata/grafana:/var/lib/grafana
+    restart:
+      always
