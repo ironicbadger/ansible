@@ -1,0 +1,20 @@
+# /etc/fstab: static file system information.
+#
+# Use 'blkid' to print the universally unique identifier for a
+# device; this may be used with UUID= as a more robust way to name devices
+# that works even if disks are added and removed. See fstab(5).
+
+# <file system> <mount point>   <type>  <options>       <dump>  <pass>
+# / was on /dev/sda1 during installation
+UUID=fca707f3-0b07-4537-a210-bdf5dfcf39a7 /               ext4    discard,errors=remount-ro 0       1
+
+/dev/disk/by-id/ata-WDC_WD80EZZX-11CSGA0_VK0U9B3Y-part1            /mnt/parity1 ext4 defaults 0 2
+/dev/disk/by-id/ata-HGST_HUH728080ALE600_VKGKGEVX-part1            /mnt/disk1 ext4 defaults 0 2
+/dev/disk/by-id/ata-WDC_WD60EZRZ-00GZ5B1_WD-WXN1H8449UPL-part1     /mnt/disk2 ext4 defaults 0 2
+/dev/disk/by-id/ata-HGST_HDN728080ALE604_VJH35HDX-part1   /mnt/disk3 ext4 defaults 0 2
+#/dev/disk/by-id/ata-Hitachi_HDS5C3030ALA630_MJ1311YNG7SAZA-part1   /mnt/disk3 xfs defaults 0 2
+/dev/disk/by-id/ata-TOSHIBA_DT01ACA300_X3544DGKS-part1             /mnt/disk4 xfs defaults 0 2
+/dev/disk/by-id/ata-ST8000AS0002-1NA17Z_Z8411V1G-part1             /mnt/disk5 ext4 defaults 0 2
+# /dev/disk/by-id/ata-WDC_WD60EZRZ-00GZ5B1_WD-WX11D55PXTV3-part1     /mnt/disk6 ext4 defaults 0 2
+
+/mnt/disk* /mnt/storage fuse.mergerfs defaults,allow_other,minfreespace=250G,fsname=mergerfs 0 0

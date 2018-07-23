@@ -67,6 +67,7 @@ services:
       - /opt/appdata/sonarr:/config
       - /mnt/storage/tv:/tv
       - /mnt/disk1/downloads/complete/tv:/downloads
+      - /mnt/storage/downloads/complete/tv_import:/tv_import
     ports:
       - 27021:8989
     links:
@@ -113,15 +114,6 @@ services:
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
-  booksonic:
-    image: ironicbadger/booksonic
-    container_name: booksonic
-    ports:
-      - 27027:8080
-    volumes:
-      - /opt/appdata/booksonic:/var/booksonic
-      - /mnt/storage/audiobooks:/audiobooks
-    restart: always
   sync:
     image: linuxserver/resilio-sync
     container_name: sync
@@ -158,25 +150,6 @@ services:
       - PUID=${PUID}
       - PGID=${PGID}
     restart: always
-  nowshowing:
-    image: ninthwalker/nowshowing
-    container_name: nowshowing
-    volumes:
-      - /opt/appdata/nowshowing:/config
-    ports:
-      - 27024:6789
-    environment:
-      - PUID=${PUID}
-      - PGID=${PGID}
-      - TZ="Europe/London"
-      - PLEX_SERVER_IP="192.168.1.2"
-      - PLEX_USERNAME="nope"
-      - PLEX_PASSWORD="nooooope"
-      - SMTP_SERVER="smtp.gmail.com"
-      - SMTP_PORT="587"
-      - EMAIL_USERNAME="nope"
-      - EMAIL_PASSWORD="nooooooope"
-    restart: always
   radarr:
     image: linuxserver/radarr
     container_name: radarr
@@ -189,5 +162,69 @@ services:
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
+    restart:
+      always
+  letsencrypt:
+    image: linuxserver/letsencrypt
+    container_name: letsencrypt
+    ports:
+      - 443:443
+    volumes:
+      - /opt/appdata/letsencrypt:/config
+    restart:
+      always
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - EMAIL=some@email.com
+      - URL=domain.tld
+      - SUBDOMAINS=one,sub,domain,comma,separated
+      - ONLY_SUBDOMAINS=true
+      - DHLEVEL=4096
+      - TZ=Europe/London
+  libresonic:
+    image: linuxserver/libresonic
+    container_name: libresonic
+    ports:
+      - 4040:4040
+    volumes:
+      - /opt/appdata/libresonic:/config
+      - /mnt/storage/music/flac:/music/flac
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - CONTEXT_PATH=sonic
+    restart:
+      always
+  ghost:
+    image: ghost
+    container_name: ghost
+    ports:
+      - "127.0.0.1:2368:2368"
+    environment:
+      - NODE_ENV=production
+      - url=https://blog.ktz.me
+    volumes:
+      - /opt/appdata/blog-ktz:/var/lib/ghost/content
+    restart:
+      always
+  influxdb:
+    image: influxdb:latest
+    container_name: influxdb
+    restart: always
+    ports:
+      - 8086:8086
+    volumes:
+      - /opt/appdata/influxdb:/var/lib/influxdb
+    restart:
+      always
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    restart: always
+    ports:
+      - 3001:3000
+    volumes:
+      - /opt/appdata/grafana:/var/lib/grafana
     restart:
       always
